@@ -23,6 +23,9 @@ import java.util.List;
 import java.util.Map;
 
 
+/**
+ * The type Movie service.
+ */
 @Service
 @Transactional
 public class MovieService extends BaseService {
@@ -30,14 +33,23 @@ public class MovieService extends BaseService {
     @Autowired
     private MovieRepository movieRepository;
 
+    /**
+     * Create map.
+     *
+     * @param movie the movie
+     * @return the map
+     */
     public Map<String, Object> create(Movie movie) {
         movie.set_id(ObjectId.get());
         movie.setCreated_date(new Date());
-        return getStringObjectMap(movie, "Movie created successfully");
+        return getStringObjectMap(movie, "Movie created successfully", HttpStatus.CREATED);
     }
 
     /**
      * GET /read  --> Read a movie by movie id from the database.
+     *
+     * @param id the id
+     * @return the map
      */
     public Map<String, Object> read(ObjectId id) {
         Movie movie = movieRepository.findBy_id(id);
@@ -45,55 +57,63 @@ public class MovieService extends BaseService {
         Map<String, Object> dataMap = new HashMap<String, Object>();
         dataMap.put("message", "Movie found successfully");
         dataMap.put("totalMovie", 1);
-        dataMap.put("status", HttpStatus.ACCEPTED);
+        dataMap.put("status", HttpStatus.OK.value());
         dataMap.put("movies", movie);
         return dataMap;
     }
 
     /**
      * GET /update  --> Update a movie record and save it in the database.
+     *
+     * @param id    the id
+     * @param movie the movie
+     * @return the map
      */
     public Map<String, Object> update(ObjectId id, Movie movie) {
         movie.set_id(id);
         movie.setUpdated_date(new Date());
-        return getStringObjectMap(movie, "Movie updated successfully");
+        return getStringObjectMap(movie, "Movie updated successfully", HttpStatus.OK);
     }
 
     /**
      * GET /delete  --> Delete a movie from the database.
+     *
+     * @param id the id
+     * @return the map
      */
     public Map<String, Object> delete(ObjectId id) {
         movieRepository.delete(movieRepository.findBy_id(id));
         Map<String, Object> dataMap = new HashMap<String, Object>();
         dataMap.put("message", "Movie deleted successfully");
-        dataMap.put("status", HttpStatus.ACCEPTED);
+        dataMap.put("status", HttpStatus.OK.value());
         return dataMap;
     }
 
     /**
      * GET /read  --> Read all movie from the database.
+     *
+     * @return the map
      */
     public Map<String, Object> fetchAll() {
         List movies =  movieRepository.findAll();
         Map<String, Object> dataMap = new HashMap<String, Object>();
         dataMap.put("message", "Movie found successfully");
         dataMap.put("totalMovie", movies.size());
-        dataMap.put("status", HttpStatus.ACCEPTED);
+        dataMap.put("status", HttpStatus.OK.value());
         dataMap.put("movies", movies);
         return dataMap;
     }
     /**
      *
      * @param movie
-     * @param s
+     * @param msg
      * @return
      */
-    private Map<String, Object> getStringObjectMap(@RequestBody @Valid Movie movie, String s) {
+    private Map<String, Object> getStringObjectMap(@RequestBody @Valid Movie movie, String msg, HttpStatus http) {
         movieRepository.save(movie);
         Map<String, Object> dataMap = new HashMap<String, Object>();
-        dataMap.put("message", s);
-        dataMap.put("status", HttpStatus.ACCEPTED);
-        dataMap.put("movie", movie);
+        dataMap.put("message", msg);
+        dataMap.put("status", http.value());
         return dataMap;
     }
 }

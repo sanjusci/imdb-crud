@@ -7,6 +7,9 @@
 
 package com.example.imdb.services;
 
+/**
+ * The type Base service.
+ */
 public class BaseService {
 
 }

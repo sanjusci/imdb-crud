@@ -13,6 +13,9 @@ import org.springframework.data.mongodb.config.AbstractMongoConfiguration;
 import org.springframework.data.mongodb.repository.config.EnableMongoRepositories;
 import com.mongodb.MongoClient;
 
+/**
+ * The type Mongo config.
+ */
 @Configuration
 @EnableMongoRepositories(basePackages="com.example.imdb.repositories")
 public class MongoConfig extends AbstractMongoConfiguration {
