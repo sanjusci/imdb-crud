@@ -10,6 +10,7 @@ package com.example.imdb.models;
 import org.bson.types.ObjectId;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.Id;
+import org.springframework.data.mongodb.core.index.Indexed;
 import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.format.annotation.DateTimeFormat;
 
@@ -29,12 +30,14 @@ public abstract class Base implements Serializable {
     @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME)
     protected Date updated_date;
 
+    @Indexed
     protected int is_deleted;
 
     protected String updated_by;
 
     protected String created_by;
 
+    @Indexed
     protected String is_active;
 
     public String getIs_active() {

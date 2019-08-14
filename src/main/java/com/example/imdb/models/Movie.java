@@ -7,16 +7,22 @@
 
 package com.example.imdb.models;
 
+import org.springframework.data.annotation.TypeAlias;
+import org.springframework.data.mongodb.core.index.Indexed;
+import org.springframework.data.mongodb.core.index.TextIndexed;
 import org.springframework.data.mongodb.core.mapping.Document;
 
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
+import java.util.List;
 
 @Document(collection = "movies")
+@TypeAlias("movie")
 public class Movie extends Base {
 
     @NotNull
     @Size(min=1)
+    @Indexed
     private String name;
 
     @NotNull
@@ -27,23 +33,26 @@ public class Movie extends Base {
     @Size(min=1)
     private String director;
 
+    @NotNull
+    @Indexed
     private int year;
 
+    @TextIndexed
     private String description;
 
-    private String writers;
+    @NotNull
+    private List<String> writers;
+    private List<String> cast;
 
     private String reviews;
 
     private double rating;
 
-    private String cast;
-
-    public void setCast(String cast) {
+    public void setCast(List<String> cast) {
         this.cast = cast;
     }
 
-    public String getCast() {
+    public List<String> getCast() {
         return cast;
     }
 
@@ -63,11 +72,11 @@ public class Movie extends Base {
         this.rating = rating;
     }
 
-    public String getWriters() {
+    public List<String> getWriters() {
         return writers;
     }
 
-    public void setWriters(String writers) {
+    public void setWriters(List<String> writers) {
         this.writers = writers;
     }
 

@@ -22,7 +22,6 @@ public interface MovieRepository extends MongoRepository<Movie, String> {
      * Note that this method is not implemented and its working code will be
      * automatically generated from its signature by Spring Data JPA.
      */
-//    public Movie findByCreated_date(Date created_date);
     public Movie findBy_id(ObjectId _id);
 
 }
