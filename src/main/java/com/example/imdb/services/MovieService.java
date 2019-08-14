@@ -39,9 +39,10 @@ public class MovieService extends BaseService {
      * @param movie the movie
      * @return the map
      */
-    public Map<String, Object> create(Movie movie) {
+    public Map<String, Object> create(@RequestBody @Valid Movie movie) {
         movie.set_id(ObjectId.get());
         movie.setCreated_date(new Date());
+        movieRepository.save(movie);
         return getStringObjectMap(movie, "Movie created successfully", HttpStatus.CREATED);
     }
 
@@ -56,9 +57,9 @@ public class MovieService extends BaseService {
 //        List movie = java.util.Arrays.asList(movieService.findBy_id(id));
         Map<String, Object> dataMap = new HashMap<String, Object>();
         dataMap.put("message", "Movie found successfully");
-        dataMap.put("totalMovie", 1);
+        dataMap.put("count", movie == null ? 0 : 1);
         dataMap.put("status", HttpStatus.OK.value());
-        dataMap.put("movies", movie);
+        dataMap.put("data", movie);
         return dataMap;
     }
 
@@ -69,10 +70,33 @@ public class MovieService extends BaseService {
      * @param movie the movie
      * @return the map
      */
-    public Map<String, Object> update(ObjectId id, Movie movie) {
+    public Map<String, Object> update(ObjectId id, @RequestBody @Valid Movie movie) {
         movie.set_id(id);
         movie.setUpdated_date(new Date());
+        movieRepository.save(movie);
         return getStringObjectMap(movie, "Movie updated successfully", HttpStatus.OK);
+    }
+
+    /**
+     * Patch map.
+     *
+     * @param id the id
+     * @return the map
+     */
+    public Map<String, Object> patch(ObjectId id) {
+        Movie movie = movieRepository.findBy_id(id);
+        String msg;
+        HttpStatus status;
+        if (movie != null) {
+            movie.setIs_active(movie.getIs_active().equals("no") ? "yes" : "no");
+            movieRepository.save(movie);
+            msg = movie.getIs_active().equals("yes") ?  "Movie activated successfully" : "Movie deactivated successfully";
+            status = HttpStatus.OK;
+        } else {
+            msg = "Movie not found";
+            status = HttpStatus.NOT_FOUND;
+        }
+        return getStringObjectMap(null, msg, status);
     }
 
     /**
@@ -95,12 +119,12 @@ public class MovieService extends BaseService {
      * @return the map
      */
     public Map<String, Object> fetchAll() {
-        List movies =  movieRepository.findAll();
+        List movie =  movieRepository.findAll();
         Map<String, Object> dataMap = new HashMap<String, Object>();
         dataMap.put("message", "Movie found successfully");
-        dataMap.put("totalMovie", movies.size());
+        dataMap.put("count", movie.size());
         dataMap.put("status", HttpStatus.OK.value());
-        dataMap.put("movies", movies);
+        dataMap.put("data", movie);
         return dataMap;
     }
     /**
@@ -109,11 +133,11 @@ public class MovieService extends BaseService {
      * @param msg
      * @return
      */
-    private Map<String, Object> getStringObjectMap(@RequestBody @Valid Movie movie, String msg, HttpStatus http) {
-        movieRepository.save(movie);
+    private Map<String, Object> getStringObjectMap(Movie movie, String msg, HttpStatus http) {
         Map<String, Object> dataMap = new HashMap<String, Object>();
         dataMap.put("message", msg);
         dataMap.put("status", http.value());
+        dataMap.put("data", movie != null ? movie : "");
         return dataMap;
     }
 }

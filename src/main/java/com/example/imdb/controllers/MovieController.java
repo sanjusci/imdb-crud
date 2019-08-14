@@ -1,8 +1,7 @@
 /**
- *
- * @author  Sanjeev Kumar
+ * @author Sanjeev Kumar
  * @version 1.0
- * @since   2019-Aug-12
+ * @since 2019-Aug-12
  */
 
 package com.example.imdb.controllers;
@@ -29,7 +28,7 @@ public class MovieController {
      * @return
      */
 //    @PostMapping(value = "/movies", headers="Accept=application/json")
-    @RequestMapping(value = "/movies", method = RequestMethod.POST, headers="Accept=application/json")
+    @RequestMapping(value = "/movies", method = RequestMethod.POST, headers = "Accept=application/json")
     public Map<String, Object> post(@Valid @RequestBody Movie movie) {
         return movieService.create(movie);
     }
@@ -41,7 +40,7 @@ public class MovieController {
      * @return
      */
 //    @GetMapping(value = "/movies/{id}", headers="Accept=application/json")
-    @RequestMapping(value = "/movies/{id}", method = RequestMethod.GET, headers="Accept=application/json")
+    @RequestMapping(value = "/movies/{id}", method = RequestMethod.GET, headers = "Accept=application/json")
     public Map<String, Object> get(@PathVariable("id") ObjectId id) {
         return movieService.read(id);
     }
@@ -54,7 +53,7 @@ public class MovieController {
      * @return
      */
 //    @PutMapping(value = "/movies/{id}", headers="Accept=application/json")
-    @RequestMapping(value = "/movies/{id}", method = RequestMethod.PUT, headers="Accept=application/json")
+    @RequestMapping(value = "/movies/{id}", method = RequestMethod.PUT, headers = "Accept=application/json")
     public Map<String, Object> put(@PathVariable("id") ObjectId id, @Valid @RequestBody Movie movie) {
         return movieService.update(id, movie);
     }
@@ -66,9 +65,21 @@ public class MovieController {
      * @return
      */
 //    @DeleteMapping(value = "/movies/{id}", headers="Accept=application/json")
-    @RequestMapping(value = "/movies/{id}", method = RequestMethod.DELETE, headers="Accept=application/json")
+    @RequestMapping(value = "/movies/{id}", method = RequestMethod.DELETE, headers = "Accept=application/json")
     public Map<String, Object> delete(@PathVariable("id") ObjectId id) {
         return movieService.delete(id);
+    }
+
+    /**
+     * GET /delete  --> Delete a movie from the database.
+     *
+     * @param id
+     * @return
+     */
+//    @PatchMapping(value = "/movies/{id}", headers="Accept=application/json")
+    @RequestMapping(value = "/movies/{id}", method = RequestMethod.PATCH, headers = "Accept=application/json")
+    public Map<String, Object> patch(@PathVariable("id") ObjectId id) {
+        return movieService.patch(id);
     }
 
     /**
@@ -77,11 +88,10 @@ public class MovieController {
      * @return
      */
 //    @GetMapping(value = "/movies", headers="Accept=application/json")
-    @RequestMapping(value = "/movies", method = RequestMethod.GET, headers="Accept=application/json")
+    @RequestMapping(value = "/movies", method = RequestMethod.GET, headers = "Accept=application/json")
     public Map<String, Object> getAll() {
         return movieService.fetchAll();
     }
-
 
 
 }
