@@ -1,3 +1,9 @@
+/**
+ *
+ * @author  Sanjeev Kumar
+ * @version 1.0
+ * @since   2019-Aug-19
+ */
 package com.example.imdb.models;
 
 import org.springframework.data.annotation.TypeAlias;
@@ -16,7 +22,7 @@ public class ReviewAndRating  extends Base {
     private String review;
 
     @Indexed
-    private double rating;
+    private int rating;
 
     @DBRef
     private Movie movie;
@@ -44,7 +50,7 @@ public class ReviewAndRating  extends Base {
      *
      * @return the rating
      */
-    public double getRating() {
+    public int getRating() {
         return rating;
     }
 
@@ -53,7 +59,7 @@ public class ReviewAndRating  extends Base {
      *
      * @param rating the rating
      */
-    public void setRating(double rating) {
+    public void setRating(int rating) {
         this.rating = rating;
     }
 

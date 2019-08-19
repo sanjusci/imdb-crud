@@ -55,7 +55,8 @@ public class MovieService extends BaseService {
     public Map<String, Object> read(ObjectId id) {
         Movie movie = movieRepository.findBy_id(id);
 //        List movie = java.util.Arrays.asList(movieService.findBy_id(id));
-        return getStringObjectMap(movie, "Movie found successfully", movie == null ? 0 : 1, HttpStatus.OK);
+        String msg = movie == null ? "Movie not found" : "Movie found successfully";
+        return getStringObjectMap(movie, msg, movie == null ? 0 : 1, HttpStatus.OK);
     }
 
     /**
@@ -113,7 +114,12 @@ public class MovieService extends BaseService {
      */
     public Map<String, Object> fetchAll() {
         List movie =  movieRepository.findAll();
-        return getStringObjectMap((Movie) movie, "Movie found successfully", movie.size(), HttpStatus.OK);
+        Map<String, Object> dataMap = new HashMap<String, Object>();
+        dataMap.put("message", "Movie found successfully");
+        dataMap.put("count", movie.size());
+        dataMap.put("status", HttpStatus.OK.value());
+        dataMap.put("data", movie);
+        return dataMap;
     }
     /**
      * Function getStringObjectMap
